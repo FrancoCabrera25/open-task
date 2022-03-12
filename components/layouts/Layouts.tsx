@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import Head from "next/head";
 import { FC } from "react";
-import { NavBar } from "../ui";
+import { NavBar, SideBar } from "../ui";
 
 interface Props {
   title?: string;
@@ -14,6 +14,7 @@ const Layouts: FC<Props> = ({ title = "Open task", children }) => {
         <title>{title}</title>
       </Head>
       <NavBar />
+      <SideBar />
       <Box
         sx={{
           padding: "10px 20px",
