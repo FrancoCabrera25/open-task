@@ -13,21 +13,21 @@ const ENTRIES_INITIAL_STATE: EntriesState  = {
     entries: [
         {
             _id: uuidv4(),
-            description: 'prueba',
+            description: 'PENDIENTE prueba',
             status: EntryStatus.PENDING,
             createdAt: Date.now(),
         },
 
         {
             _id: uuidv4(),
-            description:'prueba',
+            description:'INPROGRESS prueba',
             status: EntryStatus.INPROGRES,
             createdAt: Date.now(),
         },
         {
             _id: uuidv4(),
-            description: 'prueba',
-            status: EntryStatus.PENDING,
+            description: 'COMPLETADA prueba',
+            status: EntryStatus.FINISHED,
             createdAt: Date.now(),
         }
     ]
