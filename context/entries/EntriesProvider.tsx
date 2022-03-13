@@ -1,9 +1,7 @@
 import { FC, useReducer } from "react";
 import { EntriesContext, entriesReducer } from ".";
-import { Entry } from "../../interface";
+import { Entry, EntryStatus } from "../../interface";
 import { v4 as uuidv4 } from "uuid";
-import { EntryStatus } from "../../interface/entry";
-
 export interface EntriesState {
   entries: Entry[];
 }
@@ -46,6 +44,12 @@ const EntriesProvider: FC = ({ children }) => {
     dispatch({ type: "[Entries]- Add-Entry", payload: newEntry });
   };
 
+const updateEntry = (entry: Entry): void => {
+  dispatch({ type: '[Entries] - Update Entry ', payload: entry });
+}
+
+
+
   return (
     <EntriesContext.Provider
       value={{
@@ -53,6 +57,7 @@ const EntriesProvider: FC = ({ children }) => {
 
         //methods
         addEntry,
+        updateEntry
       }}
     >
       {children}

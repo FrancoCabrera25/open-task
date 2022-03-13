@@ -4,22 +4,23 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import { ChangeEvent, useState, useContext } from "react";
 import { EntriesContext } from "../../context/entries/EntriesContext";
+import { UIContext } from "../../context/ui";
 
 const NewEntry = () => {
   const { addEntry } = useContext(EntriesContext);
 
-  const [isAdding, setIsAdding] = useState(false);
+  const { isAddingEntry, setIsAddingEntry } = useContext(UIContext);
 
   const [inputValue, setInputValue] = useState("");
 
   const [touched, setTouched] = useState(false);
 
   const addTask = (): void => {
-    setIsAdding(true);
+    setIsAddingEntry(true);
   };
 
   const clearState = (): void => {
-    setIsAdding(false);
+    setIsAddingEntry(false);
     setTouched(false);
     setInputValue('');
   };
@@ -41,7 +42,7 @@ const NewEntry = () => {
 
   return (
     <Box sx={{ marginBottom: 2, paddingX: 2 }}>
-      {isAdding ? (
+      {isAddingEntry ? (
         <>
           <TextField
             fullWidth
