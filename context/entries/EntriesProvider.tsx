@@ -7,27 +7,7 @@ export interface EntriesState {
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description: "PENDIENTE prueba",
-      status: EntryStatus.PENDING,
-      createdAt: Date.now(),
-    },
-
-    {
-      _id: uuidv4(),
-      description: "INPROGRESS prueba",
-      status: EntryStatus.INPROGRES,
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description: "COMPLETADA prueba",
-      status: EntryStatus.FINISHED,
-      createdAt: Date.now(),
-    },
-  ],
+  entries: [],
 };
 
 const EntriesProvider: FC = ({ children }) => {
