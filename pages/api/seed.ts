@@ -19,9 +19,9 @@ export default async function handler(
   await EntryModel.deleteMany();
   await EntryModel.insertMany(seedData.entries);
 
-  const result = await EntryModel.find({});
+  // const result = await EntryModel.find({});
 
-  console.log('result', result);
+  // console.log('result', result);
 
   await db.disconnect();
 

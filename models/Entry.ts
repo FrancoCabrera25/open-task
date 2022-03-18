@@ -1,7 +1,7 @@
 import mongoose, { Model, Schema } from "mongoose";
 import { Entry, EntryStatus } from "../interface";
 
-interface IEntry extends Entry {}
+export interface IEntry extends Entry {}
 
 const entrySchema = new Schema({
   description: { type: String, required: true },
@@ -16,6 +16,8 @@ const entrySchema = new Schema({
       ],
       message: "{VALUE} no es un estado permitido",
     },
+    required: true,
+    default: EntryStatus.PENDING,
   },
 });
 
