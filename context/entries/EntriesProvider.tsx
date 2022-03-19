@@ -1,7 +1,6 @@
 import { FC, useReducer, useEffect } from "react";
 import { EntriesContext, entriesReducer } from ".";
 import { Entry, EntryStatus } from "../../interface";
-import { v4 as uuidv4 } from "uuid";
 import { entriesApi } from "../../apis";
 export interface EntriesState {
   entries: Entry[];
@@ -14,19 +13,26 @@ const ENTRIES_INITIAL_STATE: EntriesState = {
 const EntriesProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE);
 
-  const addEntry = (description: string): void => {
-    const newEntry: Entry = {
-      _id: uuidv4(),
-      description: description,
-      status: EntryStatus.PENDING,
-      createdAt: Date.now(),
-    };
+  const addEntry = async (description: string): Promise<void> => {
+    try {
+      const { data } = await entriesApi.post<Entry>("/entries", {
+        description,
+      });
 
-    dispatch({ type: "[Entries]- Add-Entry", payload: newEntry });
+      dispatch({ type: "[Entries]- Add-Entry", payload: data });
+    } catch (error) {}
   };
 
-  const updateEntry = (entry: Entry): void => {
-    dispatch({ type: "[Entries] - Update Entry ", payload: entry });
+  const updateEntry = async (entry: Entry): Promise<void> => {
+    try {
+      const { _id, description, status } = entry;
+      const { data } = await entriesApi.put<Entry>(`/entries/${entry._id}`, {
+        description,
+        status,
+      });
+
+      dispatch({ type: "[Entries] - Update Entry ", payload: data });
+    } catch (error) {}
   };
 
   const loadEntries = async () => {
