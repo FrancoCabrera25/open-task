@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 import { Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
 
-import { Layouts } from '../components/layouts';
+import { Layout } from '../components/layouts';
 import { EntryList, NewEntry } from '../components/ui';
 import { EntryStatus } from '../interface';
 
 const HomePage: NextPage = () => {
   return (
-   <Layouts title= 'Home - OpenTask'>
+   <Layout title= 'Home - OpenTask'>
    <Grid container spacing={ 2 }>
      <Grid item xs={ 12 } sm={ 4 }>
       <Card sx={{ height: 'calc(100vh - 100px )' }}>
@@ -29,7 +29,7 @@ const HomePage: NextPage = () => {
       </Card>
      </Grid>
    </Grid>
-    </Layouts>
+    </Layout>
   )
 }
 

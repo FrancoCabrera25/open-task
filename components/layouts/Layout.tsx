@@ -7,7 +7,7 @@ interface Props {
   title?: string;
 }
 
-const Layouts: FC<Props> = ({ title = "Open task", children }) => {
+const Layout: FC<Props> = ({ title = "Open task", children }) => {
   return (
     <Box sx={{ flexFlow: 1 }}>
       <Head>
@@ -26,4 +26,4 @@ const Layouts: FC<Props> = ({ title = "Open task", children }) => {
   );
 };
 
-export default Layouts;
+export default Layout;
