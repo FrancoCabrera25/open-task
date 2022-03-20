@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import mongoose from "mongoose";
-import { db } from "../../../database";
-import EntryModel from "../../../models/Entry";
-import { IEntry } from "../../../models/Entry";
+import { db } from "../../../../database";
+import EntryModel from "../../../../models/Entry";
+import { IEntry } from "../../../../models/Entry";
 
 type Data =
   | {
@@ -15,10 +15,6 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   const { id } = req.query;
-
-  if (!mongoose.isValidObjectId(id)) {
-    return res.status(400).json({ message: "El id no es valido" + id });
-  }
 
   switch (req.method) {
     case "PUT":
@@ -66,8 +62,10 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   }
 };
 
-
-const getEntryById = async (id: string | string[], res: NextApiResponse<Data>) => {
+const getEntryById = async (
+  id: string | string[],
+  res: NextApiResponse<Data>
+) => {
   try {
     await db.connect();
 
