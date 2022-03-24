@@ -28,7 +28,7 @@ const EntryList: FC<Props> = ({ status }) => {
 
     const entry = entries.find((entry) => entry._id == id)!;
     entry.status = status;
-    updateEntry(entry);
+    updateEntry(entry, false);
     startDragging(false);
   };
 

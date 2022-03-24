@@ -1,3 +1,6 @@
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+import { GetServerSideProps } from "next";
 import {
   Card,
   Grid,
@@ -13,11 +16,13 @@ import {
   Radio,
   IconButton,
 } from "@mui/material";
-import { ChangeEvent, FC, useState, useMemo } from "react";
+import { ChangeEvent, FC, useState, useMemo, useContext } from "react";
 import Layout from "../../components/layouts/Layout";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import { EntryStatus } from "../../interface/entry";
+import { EntryStatus, Entry } from "../../interface/entry";
+import { dbEntries } from "../../database";
+import { EntriesContext } from "../../context/entries/EntriesContext";
 
 const validStatus: EntryStatus[] = [
   EntryStatus.PENDING,
@@ -25,12 +30,21 @@ const validStatus: EntryStatus[] = [
   EntryStatus.FINISHED,
 ];
 
-const EntryPage: FC = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [status, setStatus] = useState<EntryStatus>(EntryStatus.PENDING);
+interface Props {
+  entry: Entry;
+}
+
+const EntryPage: FC<Props> = ({ entry }) => {
+  const { updateEntry } = useContext(EntriesContext);
+
+  const [inputValue, setInputValue] = useState(entry.description);
+  const [status, setStatus] = useState<EntryStatus>(entry.status);
   const [touched, setTouched] = useState(false);
 
-  const isValid =  useMemo(() => inputValue.length === 0 && touched, [inputValue, touched ])
+  const isValid = useMemo(
+    () => inputValue.length === 0 && touched,
+    [inputValue, touched]
+  );
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(event.target.value);
@@ -40,10 +54,20 @@ const EntryPage: FC = () => {
     setStatus(event.target.value as EntryStatus);
   };
 
-  const save = () => {};
+  const save = () => {
+    if (inputValue.trim().length === 0) return;
+
+    const updatedEntry: Entry = {
+      ...entry,
+      description: inputValue,
+      status,
+    };
+
+    updateEntry(updatedEntry, true);
+  };
 
   return (
-    <Layout>
+    <Layout title={inputValue.substring(0, 20)}>
       <Grid container justifyContent="center" sx={{ marginTop: 3 }}>
         <Grid item xs={12} sm={8} md={6} lg={4}>
           <Card>
@@ -62,11 +86,8 @@ const EntryPage: FC = () => {
                 value={inputValue}
                 onChange={onInputChange}
                 onBlur={() => setTouched(true)}
-                helperText={
-                 isValid && "Ingrese un valor"
-                }
-                error = {isValid}
-
+                helperText={isValid && "Ingrese un valor"}
+                error={isValid}
               />
               <FormControl>
                 <FormLabel>Estado: </FormLabel>
@@ -89,7 +110,7 @@ const EntryPage: FC = () => {
                 variant="contained"
                 fullWidth
                 onClick={save}
-                disabled= {  inputValue.length <= 0 }
+                disabled={inputValue.length <= 0}
               >
                 Guardar
               </Button>
@@ -109,6 +130,27 @@ const EntryPage: FC = () => {
       </IconButton>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { id } = params as { id: string };
+
+  const entry = await dbEntries.getEntryById(id);
+
+  if (!entry) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      entry,
+    },
+  };
 };
 
 export default EntryPage;
