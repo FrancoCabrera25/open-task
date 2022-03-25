@@ -5,51 +5,55 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { DragEvent, FC, useContext } from 'react';
+import { DragEvent, FC, useContext } from "react";
 import { Entry } from "../../interface";
-import { UIContext } from '../../context/ui/UIContext';
+import { UIContext } from "../../context/ui/UIContext";
 import { useRouter } from "next/router";
+import { dateFunctions } from "../../utils";
 
 interface Props {
   entry: Entry;
 }
 
 const EntryCard: FC<Props> = ({ entry }) => {
-
-  const router =  useRouter();
+  const router = useRouter();
 
   const { startDragging } = useContext(UIContext);
 
-  const onDraqStart = (event: DragEvent): void =>{
-      event.dataTransfer.setData('id', entry._id);
+  const onDraqStart = (event: DragEvent): void => {
+    event.dataTransfer.setData("id", entry._id);
 
-      startDragging(true);
-  }
+    startDragging(true);
+  };
 
   const onDragEnd = (): void => {
     startDragging(false);
-  }
+  };
 
   const onclick = () => {
-      router.push(`/entries/${entry._id}`);
-   
-  }
+    router.push(`/entries/${entry._id}`);
+  };
 
   return (
-    <Card sx={{ marginBottom: 1.5, padding: 0 }}
-    onClick= { onclick }
-    draggable
-    onDragStart={ onDraqStart }
-    onDragEnd = { onDragEnd }
+    <Card
+      sx={{ marginBottom: 1.5, padding: 0 }}
+      onClick={onclick}
+      draggable
+      onDragStart={onDraqStart}
+      onDragEnd={onDragEnd}
     >
       <CardActionArea>
         <CardContent>
-          <Typography sx={{ whiteSpace: "pre-line" }}>{ entry.description }</Typography>
+          <Typography sx={{ whiteSpace: "pre-line" }}>
+            {entry.description}
+          </Typography>
         </CardContent>
         <CardActions
           sx={{ display: "flex", justifyContent: "end", paddingRight: 2 }}
         >
-          <Typography variant="body2">fecha  </Typography>
+          <Typography variant="body2">
+            {dateFunctions.getFormatDistanceToNow(entry.createdAt)}
+          </Typography>
         </CardActions>
       </CardActionArea>
     </Card>

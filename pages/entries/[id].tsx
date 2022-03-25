@@ -23,6 +23,9 @@ import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { EntryStatus, Entry } from "../../interface/entry";
 import { dbEntries } from "../../database";
 import { EntriesContext } from "../../context/entries/EntriesContext";
+import { dateFunctions } from "../../utils";
+
+
 
 const validStatus: EntryStatus[] = [
   EntryStatus.PENDING,
@@ -73,7 +76,7 @@ const EntryPage: FC<Props> = ({ entry }) => {
           <Card>
             <CardHeader
               title={`Tarea: ${inputValue}`}
-              subheader={`Creada hace`}
+              subheader={`Creada ${dateFunctions.getFormatDistanceToNow(entry.createdAt)}`}
             />
             <CardContent>
               <TextField
